@@ -1,0 +1,134 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catch Demons</title>
+    <style>
+        #notice {
+            width: 180px;
+            height: 50px;
+            border: solid 2px rgb(0, 187, 171);
+            text-align: center;
+        }
+    </style>
+    <style>
+        #throw {
+            width: 190px;
+            height: 70px;
+            border: solid 3px #90b;
+            font-size: larger;
+        }
+    </style>
+    <style>
+        #picture {
+            width: 150px;
+            height: 300px;
+            border: solid 3px rgb(0, 255, 115);
+        }
+    </style>
+    <style>
+        #ensure {
+            width: 190px;
+            height: 70px;
+            border: solid 3px #90b;
+            font-size: larger;
+        }
+    </style>
+</head>
+<body style = "background-image: url(/public/pic/grass.jpg);
+                background-repeat: no-repeat;
+                background-size:100% 100%;
+                background-color: bisque;">
+    <h1>
+        <button onclick = "window.location.href = '/pgame'" style = "width:75px; height:45px; font-size: 16px;">
+            Go Back
+        </button>
+    </h1>
+
+    <div class = 'head_welcome' style = "color: rgb(77, 182, 29)">
+        <hr/>
+        <h2 style = "text-align: center;">
+            Now we get to GUANGCAO, go catch your demons!
+        </h2>
+        <hr/>
+        <hr/>
+    </div>
+
+    <div class = 'notice' style = 'color: rgb(251, 255, 0)'>
+        <p id = 'notice'>
+            We provide unlimited demon balls for you!
+        </p>
+    </div>
+    
+    <div class = 'catch_picture'>
+        <div class = 'catch' style = "text-align: center;">
+            <button id = 'throw'>
+                Throw demon balls
+            </button>
+        </div>
+    </div>
+    <!-- <div class = 'picture' style = "text-align: center;">
+        <img id = 'picture' src = "/public/pic/catch.gif"/>
+    </div> -->
+
+    <div class = 'show_demons'></div>
+
+    <div class = 'ensure' style = "text-align: center"></div>
+    <!-- <div class = 'ensure' style = "text-align: center">
+        <button id = 'ensure'>
+            Put in backpack & Catch more
+        </button>
+    </div> -->
+
+    <!-- common use define -->
+    <script>
+        let btn;
+        let xhr;
+    </script>
+    <!-- throw demon balls -->
+    <script>
+        btn = document.getElementById('throw');
+        btn.onclick = function() {
+            document.getElementsByClassName('catch_picture')[0].innerHTML = `
+            <div class = 'picture' style = "text-align: center;">
+                <img id = 'picture' src = "/public/pic/catch.gif"/>
+            </div>
+            `;
+            document.getElementsByClassName('ensure')[0].innerHTML = `
+            <button id = 'ensure' onclick = "window.location.href = '/catch'">
+                Put in backpack & Catch more
+            </button>
+            `;
+            xhr = new XMLHttpRequest();
+            xhr.open('GET', '/throw_ball');
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        document.getElementsByClassName('show_demons')[0].innerHTML = xhr.response;
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- todo -->
+    <!-- ensure get and catch more -->
+    <!--
+    <script>
+        btn = document.getElementsByClassName('ensure')[0];
+        btn.onclick = function() {
+            document.getElementsByClassName('catch_picture')[0].innerHTML = `
+            <div class = 'catch' style = "text-align: center">
+                <button id = 'throw'>
+                    Throw demon balls
+                </button>
+            </div>
+            `;
+            document.getElementsByClassName('ensure')[0].innerHTML = '';
+            document.getElementsByClassName('show_demons')[0].innerHTML = '';
+        }
+    </script>
+    -->
+</body>
+</html>

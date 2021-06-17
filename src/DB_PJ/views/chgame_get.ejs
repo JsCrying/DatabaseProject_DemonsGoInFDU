@@ -1,0 +1,96 @@
+<html>
+<head>
+    <meta charset = "utf-8">
+</head>
+<body style = "background-color: bisque; 
+               background-image: url(/public/pic/chp.jpeg); 
+               background-repeat: no-repeat; 
+               background-size:100% 100%;">
+    <h1><button onclick = "window.location.href = '/'" style = "width:75px; height:45px; font-size: 16px;">EXIT</button></h1>
+    <h2 style = "text-align: center; font-size: 24px;">Welcome, CH <%= chname%>!</h2>
+    <div class = "ch_Illustration_op">
+        <div class = "ch_add_demon">
+            <form action = "/ch_add_demon" method = "get">
+                <fieldset>
+                    <legend style = "font-size: 24px;">Add new demon</legend>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        dname <input name = "dname" placeholder = "eg: 孙悟空">
+                    </p>
+                    <!-- <p>evolution_phase&nbsp;<input name = "evo_ph" placeholder = "eg: 1"></p> -->
+                    <p>evolution_phase
+                        <select id = 'select_evo_ph' name = "select_evo_ph">
+                            <option value = "1">1</option>
+                            <option value = "2">2</option>
+                        </select>
+                    </p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        dorientation
+                        <select id = 'select_do' name = "select_do">
+                            <option value = "physical_attacker">physical_attacker</option>
+                            <option value = "physical_defender">physical_defender</option>
+                            <option value = "magic_attacker">magic_attacker</option>
+                            <option value = "magic_defender">magic_defender</option>
+                            <option value = "support">support</option>
+                        </select>
+                    </p>
+                    <p>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button id = 'btn_add_demon' type = "submit">
+                            ADD
+                        </button>
+                    </p>
+                </fieldset>
+            </form>
+        </div>
+        <div class = 'add_status'>
+            <p id = 'add_status' style = "color: rgb(0, 17, 255)"><%= add_status%>
+            </p>
+        </div>
+    </div>
+
+    <br/>
+
+    <div class = "ch_demon_illustration">
+        <p>Check demon illustration(includes all kinds of demons in FDU):</p>
+        <button id = 'ch_illustration_s'>SHOW</button>
+        <button id = 'ch_illustration_c'>CONCEAL</button>
+        <div id = "ch_illustration"></div>
+    </div>
+    <!-- common use define -->
+    <script>
+        let btn;
+        let xhr;
+    </script>
+    <!-- add demon -->
+    <script>
+        btn = document.getElementById('btn_add_demon');
+        btn.onclick = function() {
+            xhr = new XMLHttpRequest();
+            xhr.open('GET', '/ch_add_demon');
+            xhr.send();
+        };
+    </script>
+    <!-- illustration -->
+    <script>
+        btn = document.getElementById('ch_illustration_s');
+        btn.onclick = function() {
+            xhr = new XMLHttpRequest();
+            xhr.open('GET', '/ch_illustration');
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        document.getElementById('ch_illustration').innerHTML = xhr.response;
+                    }
+                }
+            };
+        };
+    </script>
+    <script>
+        btn = document.getElementById('ch_illustration_c');
+        btn.onclick = function() {
+            document.getElementById('ch_illustration').innerHTML = '';
+        }
+    </script>
+</body>
+</html>

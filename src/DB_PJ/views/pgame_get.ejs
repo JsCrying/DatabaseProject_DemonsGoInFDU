@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayerGame</title>
+    <style>
+        #operation_status{
+            color: rgb(0, 17, 255);
+            font-size: 24px
+        }
+    </style>
+</head>
+<body style = "background-image: url(/public/pic/pgp.jpeg);
+                background-repeat: no-repeat;
+                background-size:100% 100%;
+                background-color: bisque;">
+    <h1><button onclick = "window.location.href = '/'" style = "width:75px; height:45px; font-size: 16px;">EXIT</button></h1>
+    <h2 style = "text-align: center; font-size: 24px;">Welcome, Player <%= username%>!</h2>
+    <div class = "catch">
+        <p>Click here to catch some demons
+            <div class = "catch_button">
+            <button onclick = "window.location.href = '/catch'" 
+                style = "width:70px; height:40px; font-size: 16px;">
+                CATCH
+            </button>
+            </div>
+        </p>
+    </div>
+
+    <br/>
+
+    <div class = "backpack">
+        <p>Backpack(contains the demons you have caught):</p>
+        <button id = 'backpack_o'>OPEN</button>
+        <button id = 'backpack_c'>CLOSE</button>
+        <div id = "backpack"></div>
+    </div>
+
+    <br/>
+
+    <div class = "currency">
+        <p>Currency:</p>
+        <button id = "currency_s">SHOW</button>
+        <button id = "currency_c">CONCEAL</button>
+        <p id = "dmoney"></p>
+        <p id = "ddiamond"></p>
+    </div>
+
+    <br/>
+
+    <div class = "m2d">
+        <p>Transfer dmoney to ddiamond(10:1)</p>
+        <p id = 'transfer_state'><%= status%></p>
+        <form action = "/transfer" method = "get">
+            <fieldset>
+                <legend style = "font-size: 24px;">Transfer</legend>
+                <p>dmoney num <input name = "dmoney" placeholder = "Dmoney"></p>
+                <p><button id = 'transfer' type = "submit">TRANSFER ONCE</button></p>
+            </fieldset>
+        </form>
+    </div>
+
+    <br/>
+
+    <div class = "demon_illustration">
+        <p>Check demon illustration(includes all kinds of demons in FDU):</p>
+
+        <button id = 'illustration_s'>SHOW</button>
+        <button id = 'illustration_c'>CONCEAL</button>
+        <div id = "illustration"></div>
+    </div>
+
+    <br/>
+
+    <div class = "record">
+        <p>Check demon records(information about the demons you caught or abandoned):</p>
+        <button id = 'record_s'>SHOW</button>
+        <button id = 'record_c'>CONCEAL</button>
+        <div id = "record"></p></div>
+    </div>
+    <div class = "record_bytime">
+        <form action = "/record_bytime" method = "get">
+            <fieldset>
+                <legend style = "font-size: 24px;">Check by time</legend>
+                <p>
+                    Begin Time <input name = "begin_t" placeholder = "eg: 2021-06-01">
+                    End Time <input name = "end_t" placeholder = "eg: 2021-06-01">
+                </p>
+                <button type = "submit">GO</button>
+            </fieldset>
+        </form>
+    </div>
+
+    <!--common use define-->
+    <script>
+        let btn;
+        let xhr;
+    </script>
+    <!--backpack-->
+    <script>
+        btn = document.getElementById('backpack_o');
+        btn.onclick = function() {
+            xhr = new XMLHttpRequest();
+            xhr.open('GET', '/backpack');
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        document.getElementById('backpack').innerHTML = xhr.response;
+                    }
+                }
+            };
+        };
+    </script>
+    <script>
+        btn = document.getElementById('backpack_c');
+        btn.onclick = function() {
+            document.getElementById('backpack').innerHTML = '';
+        }
+    </script>
+    <!--upgrade-->
+    <script>
+        function upgrade_demon(index) {
+            xhr = new XMLHttpRequest();
+            xhr.responseType = 'json';
+            xhr.open('GET', '/upgrade?index=' + index);
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        document.getElementById('backpack').innerHTML = xhr.response.restr;
+                        document.getElementById('operation_status').innerHTML = xhr.response.log_str;
+                    }
+                }
+            };
+        }
+    </script>
+    <!--abandon-->
+    <script>
+        function abandon_demon(index) {
+            xhr = new XMLHttpRequest();
+            xhr.responseType = 'json';
+            xhr.open('GET', '/abandon?index=' + index);
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        document.getElementById('backpack').innerHTML = xhr.response.restr;
+                        document.getElementById('operation_status').innerHTML = xhr.response.log_str;
+                    }
+                }
+            };
+        }
+    </script>
+    <!--currency-->
+    <script>
+        btn = document.getElementById('currency_s');
+        btn.onclick = function() {
+            xhr = new XMLHttpRequest();
+            xhr.responseType = 'json';
+            let dmoney = document.getElementById('dmoney');
+            let ddiamond = document.getElementById('ddiamond');
+            xhr.open('GET', '/currency');
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        dmoney.innerHTML = 'dmoney: ' + xhr.response.dmoney;
+                        ddiamond.innerHTML = 'ddiamond: ' + xhr.response.ddiamond;
+                    }
+                }
+            };
+        }
+    </script>
+    <script>
+        btn = document.getElementById('currency_c');
+        btn.onclick = function() {
+            dmoney = document.getElementById('dmoney');
+            ddiamond = document.getElementById('ddiamond');
+            dmoney.innerHTML = '';
+            ddiamond.innerHTML = '';
+        }
+    </script>
+    <!--transfer dmoney to ddiamond-->
+    <script>
+        btn = document.getElementById('transfer');
+        btn.onclick = function() {
+            xhr = new XMLHttpRequest();
+            xhr.open('GET', '/transfer');
+            xhr.send();
+        };
+    </script>
+    <!--illustration-->
+    <script>
+        btn = document.getElementById('illustration_s');
+        btn.onclick = function() {
+            xhr = new XMLHttpRequest();
+            xhr.open('GET', '/illustration');
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        document.getElementById('illustration').innerHTML = xhr.response;
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        btn = document.getElementById('illustration_c');
+        btn.onclick = function() {
+            document.getElementById('illustration').innerHTML = '';
+        }
+    </script>
+    <!--demon record-->
+    <script>
+        btn = document.getElementById('record_s');
+        btn.onclick = function() {
+            xhr = new XMLHttpRequest();
+            xhr.open('GET', '/record');
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        document.getElementById('record').innerHTML = xhr.response;
+                    }
+                }
+            };
+        };
+    </script>
+    <script>
+        btn = document.getElementById('record_c');
+        btn.onclick = function() {
+            document.getElementById('record').innerHTML = '';
+        };
+    </script>
+</body>
+</html>

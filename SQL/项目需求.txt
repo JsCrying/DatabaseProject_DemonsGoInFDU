@@ -1,0 +1,53 @@
+Title:一起来复旦捉妖(Demons Go in fdu)
+
+1.账号(accounts{chaccounts, paccounts})
+(1)用户编号(uid)
+(2)用户名(usrname)
+(3)登录密码(pass_word)
+身份(策划(ch)/玩家(player))
+策划能够创建新玩家账号、在妖灵图鉴中增加新妖灵、修改妖灵定位;
+普通玩家只能够捕捉妖灵图鉴中存在的妖灵
+
+2.妖灵图鉴(illustration)
+存储每种妖灵的各项信息
+(1)编号(did)(1~MAX)
+(2)名称(dname)
+(3)定位(orientation)(物理(physical)/法术(magic) 坦克(defender)/输出(attacker))
+(4)进化阶段(evolution_phase)(1~2)
+
+3.玩家妖灵背包(backpack)
+存储玩家入游以来所捕捉的妖灵的信息
+(1)获得时间T(ctime)
+(2)等级L(level)(1~50):妖灵等级提升一级需要3符印、500云纹，
+在妖灵等级到达30级时需要额外30个符印进行进化，且从该阶段开始，
+妖灵等级提升一级需要5符印、1000云纹、10钻石
+(3)名称N(dname)
+(4)资质Z(talent)(1~32)
+(5)符印数量(symbol_number):妖灵的等级提升需消耗一定量符印、云纹、钻石，
+放生同种妖灵可获得对应的2 * L个符印
+(6)战斗力A(power):计算公式A=L * Z
+
+4.玩家货币信息(currency)
+存储云纹、钻石即妖灵升级所需材料信息
+(1)云纹(dmoney):捕捉1只妖灵获得100云纹
+(2)钻石(ddiamond):捕捉1只妖灵获得1钻石
+钻石与云纹之间存在汇率转换:1:10
+
+5.玩家操作(poperation)
+(1)捕捉(catch):点击一次可随机捕捉图鉴中的5只妖灵，并存入妖灵背包
+(初始捕捉妖灵为1级)
+(2)查看背包(open_bag):打开妖灵背包界面
+(3)升级(upgrade):该操作在妖灵背包中进行
+(4)放生(abandon):该操作在妖灵背包中进行
+(5)查看妖灵图鉴(check_illustration)
+
+6.策划操作(choperation)
+(1)增加新妖灵(add_demon)
+(2)修改妖灵定位(modify_orientation)
+
+7.玩家妖灵记录(demon_record)
+按照时间顺序展示
+(1)捕捉(catch)/放生(abandon)记录
+(2)名称(dname)
+(3)战斗力(power)
+可按照时间段查询(search_by_time)(鲁棒性):输入2个Date格式完整年月日进行查询

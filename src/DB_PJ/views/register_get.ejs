@@ -1,0 +1,24 @@
+<html>
+<head>
+    <meta charset = "utf-8">
+</head>
+<body style = "background-color: bisque; 
+               background-image: url(/public/pic/wb.jpeg); 
+               background-repeat: no-repeat; 
+               background-size:100% 100%;">
+    <h1><button onclick = "window.location.href = '/plogin'" style = "width:75px; height:45px; font-size: 16px;">Go Back</button></h1>    
+        <br/>
+        <br/>
+        <br/>
+    <p style = "color: red"><%= message%></p>
+    <form action = "/register" method = "post">
+        <fieldset>
+            <legend style = "font-size: 48px;">Register Form</legend>
+            <p style = "text-align: center;">&nbsp Input Username <input name = "username" placeholder = "Username"></p>
+            <p style = "text-align: center;">&nbsp Input Password <input name = "password" placeholder = "Password" type = "password"></p>
+            <p style = "text-align: center;">Ensure Password <input name = "e_password" placeholder = "Ensure Password" type = "password"></p>
+            <p style = "text-align: center;"><button type = "submit">Register</button></p>
+        </fieldset>
+    </form>
+</body>
+</html>

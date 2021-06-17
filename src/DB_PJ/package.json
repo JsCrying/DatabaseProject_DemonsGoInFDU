@@ -1,0 +1,19 @@
+{
+  "name": "DB_PJ",
+  "version": "1.0.0",
+  "description": "node.js&&express config\r 1.npm init --yes\r 2.npm i express",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^3.2.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "pg": "^8.6.0"
+  }
+}
